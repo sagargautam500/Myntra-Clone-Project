@@ -6,11 +6,13 @@ const bagSlice = createSlice({
 
   reducers: {
     addBagItem: (state, action) => {
-      const Newitem = action.payload;
-      return [{...Newitem,id:Date.now()}, ...state]
+      // const Newitem = action.payload;                 //for first method:Obtina Object
+      // return [{...Newitem,id:Date.now()}, ...state]   //for first method
+      const Newitem=action.payload;  //obtain object id only
+      state.push(Newitem)
     },
     removeBagItem: (state, action) => {
-      const newState = state.filter(item => item.id != action.payload)
+      const newState = state.filter(itemId => itemId != action.payload)
       return newState
     }
   }

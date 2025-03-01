@@ -27,7 +27,7 @@ header {
   min-width: 500px;
   justify-content: space-evenly;
 }
-.nav_bar a {
+.nav_link {
   font-size: 14px;
   letter-spacing: .3px;
   color: #282c3f;
@@ -37,11 +37,11 @@ header {
   padding: 28px 0;
   border-bottom: 5px solid #ffffff;
 }
-.nav_bar a:hover {
+.nav_link:hover {
   border-bottom: 4px solid #f54e77;
 }
 
-.nav_bar a sup {
+.nav_link sup {
   color: #ff3f6c;
   font-size: 10px;
 }
@@ -141,7 +141,7 @@ header {
 
 .copyright {
   color: #94969f;
-  text-align: end;
+  text-align: center;
   padding: 15px;
 }
 
@@ -226,6 +226,19 @@ header {
 .btn-add-bag:hover{
   opacity: 50%;
 }
+.btn-remove-bag{
+  margin-top: 8px;
+  font-size: 18px;
+  width: 100%;
+  background-color: rgb(231, 59, 76);
+  border: none;
+  padding: 5px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.btn-remove-bag:hover{
+  opacity: 50%;
+}
 .bag-item-count {
   background-color: #f16565;
   white-space: nowrap;
@@ -260,4 +273,43 @@ a.action_container:link {
     align-items: center;
     border-bottom: 1px solid #b6b1b1;
   }
+}
+@media (max-width:500px){
+.nav_bar{
+  display: flex;
+  min-width: 400px;
+  justify-content: space-evenly;
+}
+.nav_link {
+  font-size: 13px;
+  letter-spacing: .1px;
+  color: #282c3f;
+  font-weight: 500;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 6px 0;
+  border-bottom: 3px solid #ffffff;
+}
+}
+@media (max-width:388px){
+.nav_bar{
+  display: flex;
+  min-width: 300px;
+  justify-content: space-evenly;
+}
+.nav_link {
+  font-size: 9px;
+  letter-spacing: .1px;
+  color: #1c1d24;
+  font-weight: 400;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 5px 0;
+  border-bottom: 1px solid #ffffff;
+}
+}
+.profilePhoto1 img{
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
 }

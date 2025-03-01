@@ -136,6 +136,7 @@
 
 .remove-from-cart {
   position: absolute;
+  color: red;
   font-size: 25px;
   top: 10px;
   right: 18px;
@@ -145,6 +146,6 @@
   transition: transform 0.2s ease-in-out;
 }
 .remove-from-cart:hover{
-color: red;
-transform: scale(1.01);
+color: rgb(198, 101, 101);
+transform: scale(1.1);
 }

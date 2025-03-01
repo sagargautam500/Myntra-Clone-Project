@@ -1,8 +1,13 @@
 import React, { use } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { bagsAction } from "../store/bagSlice";
+import { MdDeleteForever } from "react-icons/md";
+import { IoIosAddCircle } from "react-icons/io";
+
 function HomeItem({ item }) {
   const dispatch = useDispatch();
+  const bagsItems = useSelector((state) => state.bags);
+  const elementFound = bagsItems.indexOf(item.id) >= 0;
   return (
     <>
       <div className="item-container">
@@ -17,12 +22,22 @@ function HomeItem({ item }) {
           <span className="original-price">Rs {item.original_price}</span>
           <span className="discount">({item.discount_percentage}% OFF)</span>
         </div>
-        <button
-          className="btn-add-bag"
-          onClick={()=>dispatch(bagsAction.addBagItem(item))}
-        >
-          Add to Bag
-        </button>
+        {!elementFound ? (
+          <button
+            className="btn-add-bag"
+            // onClick={()=>dispatch(bagsAction.addBagItem(item))} //for first method
+            onClick={() => dispatch(bagsAction.addBagItem(item.id))}
+          >
+           <IoIosAddCircle /> Add to Bag
+          </button>
+        ) : (
+          <button
+            className="btn-remove-bag"
+            onClick={()=>dispatch(bagsAction.removeBagItem(item.id))}
+          >
+            <MdDeleteForever />Remove
+          </button>
+        )}
       </div>
     </>
   );

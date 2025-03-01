@@ -5,7 +5,12 @@ import BagItem from "../components/BagItem";
 import { useSelector } from "react-redux";
 
 function Bags() {
-  const BagItems = useSelector((state) => state.bags);
+  const BagItemsID = useSelector((state) => state.bags);
+  const Items = useSelector((state) => state.Items);
+  const BagItems = Items.filter((item) => {
+    const bagItem = BagItemsID.indexOf(item.id) >= 0;
+    return bagItem;
+  });
   return (
     <>
       <main>
@@ -13,10 +18,10 @@ function Bags() {
           {BagItems.length === 0 && (
             <h1 className="msg">No items are available!</h1>
           )}
-          {BagItems.map((item, index) => {
+          {BagItems.map((item) => {
             return <BagItem key={item.id} item={item} />;
           })}
-          <BagSummary />
+          <BagSummary BagItems={BagItems} />
         </div>
       </main>
     </>
