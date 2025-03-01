@@ -8,7 +8,13 @@
   font-size: 13px;
   line-height: 1.42857143;
 }
-
+.msg{
+  display: inline-block;
+  width: 64%;
+  padding-right: 20px;
+  border-right: 1px solid #eaeaec;
+  padding-top: 32px;
+}
 .bag-page {
   width: 75%;
   margin-left: 12.5%;
@@ -70,6 +76,9 @@
   background-color: rgb(255, 63, 108);
   color: rgb(255, 255, 255);
   cursor: pointer;
+}
+.btn-place-order:hover{
+  opacity: 50%;
 }
 
 .bag-item-container {
@@ -133,4 +142,9 @@
   width: 14px;
   height: 14px;
   cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+.remove-from-cart:hover{
+color: red;
+transform: scale(1.01);
 }
