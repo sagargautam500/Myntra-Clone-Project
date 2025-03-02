@@ -1,11 +1,13 @@
 // components/profile/SignUp.jsx
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../store/authSlice";
 import styles from "./SignUp.module.css";
 
 function SignUp({ setCurrentStep }) {
   const dispatch = useDispatch();
+  const error = useSelector((state) => state.auth.error);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,12 +17,21 @@ function SignUp({ setCurrentStep }) {
     phone: "",
     profilePhoto: null, // For storing the uploaded profile photo
   });
-  const [error, setError] = useState("");
 
+  // const handlePhotoUpload = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     setFormData({ ...formData, profilePhoto: file });
+  //   }
+  // };
   const handlePhotoUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setFormData({ ...formData, profilePhoto: file });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({ ...formData, profilePhoto: reader.result }); // Save Base64 string
+      };
+      reader.readAsDataURL(file); // Convert file to Base64
     }
   };
 
@@ -29,15 +40,15 @@ function SignUp({ setCurrentStep }) {
 
     // Validate password match
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
+      dispatch(authActions.setError("Passwords do not match"));
       return;
     }
 
     // Check if user already exists in localStorage
     const users = JSON.parse(localStorage.getItem("users")) || [];
-    const userExists = users.some((u) => u.email === formData.email);
+    const userExists = users.some((u) => u.email === formData.email &&u.phone===formData.phone);
     if (userExists) {
-      setError("User already exists. Please sign in.");
+      dispatch(authActions.setError("User already exists. Please sign in."));
       return;
     }
 
@@ -48,9 +59,9 @@ function SignUp({ setCurrentStep }) {
       password: formData.password,
       address: formData.address,
       phone: formData.phone,
-      profilePhoto: formData.profilePhoto
-        ? URL.createObjectURL(formData.profilePhoto)
-        : null, // Store photo URL
+      profilePhoto: formData.profilePhoto    // Store Base64 string
+        // ? URL.createObjectURL(formData.profilePhoto)
+        // : null, // Store photo URL
     };
     localStorage.setItem("users", JSON.stringify([...users, newUser]));
 
@@ -64,7 +75,7 @@ function SignUp({ setCurrentStep }) {
       phone: "",
       profilePhoto: null,
     });
-    setError("");
+    dispatch(authActions.setError(""));
     setCurrentStep("signin");
   };
 
@@ -150,6 +161,18 @@ function SignUp({ setCurrentStep }) {
         {error && <p className={styles.error}>{error}</p>}
         <button type="submit">Sign Up</button>
       </form>
+      <p className={styles.signInLink}>
+              Already have an account?{" "}
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentStep("signin"); // Navigate to Sign Up
+                }}
+              >
+                Sign In
+              </a>
+            </p>
     </div>
   );
 }

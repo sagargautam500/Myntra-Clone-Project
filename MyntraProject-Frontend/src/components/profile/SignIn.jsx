@@ -1,13 +1,14 @@
 // components/profile/SignIn.jsx
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../store/authSlice";
 import styles from "./SignIn.module.css";
 
 function SignIn({ setCurrentStep }) {
   const dispatch = useDispatch();
+  const error = useSelector((state) => state.auth.error);
   const [formData, setFormData] = useState({
-    email: "",
+    email_phone: "",
     password: "",
   });
 
@@ -17,13 +18,15 @@ function SignIn({ setCurrentStep }) {
     // Validate credentials against users in localStorage
     const users = JSON.parse(localStorage.getItem("users")) || [];
     const user = users.find(
-      (u) => u.email === formData.email && u.password === formData.password
+      (u) =>
+        (u.phone || u.email === formData.email_phone) &&
+        u.password === formData.password
     );
 
     if (user) {
       dispatch(authActions.loginSuccess(user));
     } else {
-      dispatch(authActions.setError("Invalid email or password"));
+      dispatch(authActions.setError("Invalid email/Phone or password"));
     }
   };
 
@@ -32,14 +35,15 @@ function SignIn({ setCurrentStep }) {
       <h2 className={styles.title}>Sign In</h2>
       <form onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
-          <label>Email</label>
+          <label>Email/Phone</label>
           <input
-            type="email"
-            placeholder="Enter your email"
-            value={formData.email}
+            type="text"
+            placeholder="Enter your email or phone"
+            value={formData.email_phone}
             onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
+              setFormData({ ...formData, email_phone: e.target.value })
             }
+            required
           />
         </div>
         <div className={styles.formGroup}>
@@ -51,16 +55,21 @@ function SignIn({ setCurrentStep }) {
             onChange={(e) =>
               setFormData({ ...formData, password: e.target.value })
             }
+            required
           />
         </div>
+        {error && <p className={styles.error}>{error}</p>}
         <button type="submit">Sign In</button>
       </form>
-      <p className={styles.signupLink}>
+      <p className={styles.signUpLink}>
         Don't have an account?{" "}
-        <a href="#" onClick={(e) => {
-          e.preventDefault();
-          setCurrentStep("signup"); // Navigate to Sign Up
-        }}>
+        <a
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            setCurrentStep("signup"); // Navigate to Sign Up
+          }}
+        >
           Sign Up
         </a>
       </p>
